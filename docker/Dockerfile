@@ -1,9 +1,10 @@
-ARG PYTORCH="1.6.0"
-ARG CUDA="10.1"
-ARG CUDNN="7"
-ARG MMCV="1.6.0"
-ARG MMDET="2.24.0"
-ARG MMSEG="0.20.0"
+ARG PYTORCH="1.11.0"
+ARG CUDA="11.3"
+ARG CUDNN="8"
+ARG MMCV="1.7.0"
+ARG MMDET="2.28.2"
+ARG MMSEG="0.30.0"
+#ARG NUMBA="0.53.0"
 FROM pytorch/pytorch:${PYTORCH}-cuda${CUDA}-cudnn${CUDNN}-devel
 
 ENV TORCH_CUDA_ARCH_LIST="6.0 6.1 7.0+PTX"
@@ -26,11 +27,15 @@ ARG MMDET
 ARG MMSEG
 RUN ["/bin/bash", "-c", "pip install --no-cache-dir mmcv-full==${MMCV} -f https://download.openmmlab.com/mmcv/dist/cu${CUDA//./}/torch${PYTORCH}/index.html"]
 RUN pip install --no-cache-dir mmdet==${MMDET} mmsegmentation==${MMSEG}
+RUN pip install --no-cache-dir numba
+
 
 # Install MMDetection3D
 RUN conda clean --all
+#RUN conda install python=3.8
 COPY . /mmdetection3d
 WORKDIR /mmdetection3d
 ENV FORCE_CUDA="1"
-RUN pip install -r requirements/build.txt
+#RUN pip install -r requirements/build.txt
 RUN pip install --no-cache-dir -e .
+
