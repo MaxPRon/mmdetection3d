@@ -10,6 +10,9 @@ FROM pytorch/pytorch:${PYTORCH}-cuda${CUDA}-cudnn${CUDNN}-devel
 ENV TORCH_CUDA_ARCH_LIST="6.0 6.1 7.0+PTX"
 ENV TORCH_NVCC_FLAGS="-Xfatbin -compress-all"
 ENV CMAKE_PREFIX_PATH="$(dirname $(which conda))/../"
+ENV LANG C.UTF-8
+ENV LC_ALL C.UTF-8
+
 
 # To fix GPG key error when running apt-get update
 RUN apt-key adv --fetch-keys https://developer.download.nvidia.com/compute/cuda/repos/ubuntu1804/x86_64/3bf863cc.pub
